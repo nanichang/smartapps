@@ -8,9 +8,18 @@ class EloquentRegisterRepository implements RegisterContract {
     public function register($request) {
         $user = new User();
         $user = $this->userProperties($user, $request);
-        // if($user->id) {
-        //     sendWelcomeEmail($user);
-        // }
+
+        // Define Email params
+        if($user->id) {
+            $params['data']           = ['greetings' => 'Hello '. $user->name];
+            $params['to']             = $user->email;
+            $params['template_type']  = 'markdown';
+            $params['template']       = 'emails.master-template';
+            $params['subject']        = 'Welcome to Smart Apps';
+            $params['from_email']     = 'jondoe@example.com';
+            $params['from_name']      = 'Team Smart Apps';
+            sendmail($params);
+        }
         return $user;
 
     }

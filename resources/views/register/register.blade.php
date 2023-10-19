@@ -11,6 +11,28 @@
 
                         <form action="{{ route('auth.register.post') }}" method="POST">
                             @csrf
+
+                            @if ($message = Session::get('success'))
+                                <div class="alert alert-success">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @endif
+                            @if ($message = Session::get('error'))
+                                <div class="alert alert-danger">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @endif
+
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            
                             <div class="form-group mb-3">
                                 <input type="text" placeholder="Name" id="name" class="form-control" name="name"
                                     required autofocus>
@@ -33,12 +55,6 @@
                                 @if ($errors->has('password'))
                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                                 @endif
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="checkbox">
-                                    <label><input type="checkbox" name="remember"> Remember Me</label>
-                                </div>
                             </div>
 
                             <div class="d-grid mx-auto">

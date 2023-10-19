@@ -7,6 +7,7 @@ class DashboardController extends Controller
     protected $repo;
     public function __construct(DashboardContract $dashboardContract) {
         $this->repo = $dashboardContract;
+        $this->middleware('auth');
     }
 
     public function index()
@@ -14,33 +15,17 @@ class DashboardController extends Controller
         return view('dashboard.index');
     }
 
-    public function create()
+
+
+    public function update(Request $request)
     {
-        //
+        if($request->file() != null) {
+            if($this->repo->uploadProfilePicture($request)) {
+                return redirect()->back()->with('success','Profile picture uploaded successfully');
+            }
+            return redirect()->back()->with('error','Profile picture upload fialed');
+        }
+        return redirect()->back()->with('error','Profile picture upload fialed');
     }
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function delete($id)
-    {
-        //
-    }
 }

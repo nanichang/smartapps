@@ -21,8 +21,8 @@ class RegisterController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        $user = $this->repo->register($request->all());
-        return redirect()->route('dashboard')->with('success','');
+        $this->repo->register($request->all());
+        return redirect()->route('dashboard')->with('success','Registration successful');
     }
 
 

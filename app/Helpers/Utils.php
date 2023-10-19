@@ -1,13 +1,22 @@
 <?php
-    use Illuminate\Support\Facades\Mail;
 
-    function sendWelcomeEmail($user, $code) {
+    use App\Jobs\GlobalEmailJob;
 
-        Mail::send('emails.welcome', [
-            'user' => $user,
-            'code' => $code
-        ], function($message) use ($user) {
-            $message->to($user->email);
-            $message->subject("Hello $user->first_name, Welcome to Smart Apps.");
-        });
+    if (!function_exists('sendmail')) {
+        function sendmail(array $data) {
+            try {
+                dispatch(new GlobalEmailJob($data));
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
+
+    }
+
+    if (!function_exists("uploadProfilePicture")) {
+        function uploadProfilePicture($request) {
+            $filename = $request->file->getClientOriginalName();
+            $request->file->storeAs('profile_images', $filename, 'public');
+            return $filename;
+        }
     }

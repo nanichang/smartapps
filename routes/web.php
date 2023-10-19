@@ -33,4 +33,5 @@ Route::group(['prefix'=> 'auth'], function () {
 
 Route::group(['prefix'=> 'dashboard'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/profile-picture-upload', [DashboardController::class, 'update'])->name('dashboard.profile.patch');
 });
