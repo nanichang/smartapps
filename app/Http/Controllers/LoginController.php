@@ -10,6 +10,10 @@ class LoginController extends Controller
         $this->repo = $loginContract;
     }
 
+    public function getLogin(){
+        return view('login.login');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -18,15 +22,12 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')
-                        ->withSuccess('Signed in');
+
+        if ($this->repo->login($credentials)) {
+            return redirect()->intended('dashboard')->withSuccess('Signed in');
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect()->back()->withErrors('Login details are not valid');
     }
-
-
-
 
 }

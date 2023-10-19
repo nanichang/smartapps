@@ -8,14 +8,18 @@ class EloquentRegisterRepository implements RegisterContract {
     public function register($request) {
         $user = new User();
         $user = $this->userProperties($user, $request);
+        // if($user->id) {
+        //     sendWelcomeEmail($user);
+        // }
         return $user;
 
     }
 
     private function userProperties($user, $request) {
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        // dd($request);
+        $user->name = $request['name'];
+        $user->email = $request['email'];
+        $user->password = Hash::make($request['password']);
         $user->save();
         return $user;
     }

@@ -9,38 +9,22 @@ class RegisterController extends Controller
         $this->repo = $registerContract;
     }
 
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
+    public function register() {
+        return view('register.register');
     }
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+        ]);
+
+        $user = $this->repo->register($request->all());
+        return redirect()->route('dashboard')->with('success','');
     }
 
-    public function show($id)
-    {
-        //
-    }
 
-    public function edit($id)
-    {
-        //
-    }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function delete($id)
-    {
-        //
-    }
 }
